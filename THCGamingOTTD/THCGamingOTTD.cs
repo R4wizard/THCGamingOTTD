@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.IO;
-using Ionic.Zip;
 using System.Threading;
 
 namespace THCGamingOTTD
@@ -108,12 +107,6 @@ namespace THCGamingOTTD
 					this.DisplayVersions();
 					break;
 
-				case "prepare":
-				case "--prepare":
-				case "-p":
-					this.PrepareBundle(args[1]);
-					break;
-				
 				case "help":
 				case "--help":
 				case "-h":
@@ -142,10 +135,6 @@ namespace THCGamingOTTD
 			Console.WriteLine("   version                 show version information");
 			Console.WriteLine("   help                    show this help screen");
 			Console.WriteLine("   prepare <bundle-dir>    prepares a zip file for release from a bundle dir.");
-		}
-
-		public void PrepareBundle(string source) {
-			Updater.PrepareBundle(source);
 		}
 			
 	}
