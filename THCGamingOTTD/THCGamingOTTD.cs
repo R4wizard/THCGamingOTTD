@@ -23,7 +23,7 @@ namespace THCGamingOTTD
 		}
 
 		static public string Version {
-			get { return "0.1.0"; }
+			get { return "0.1.1"; }
 		}
 
 		static public void WriteHeader(string header) {
@@ -40,6 +40,7 @@ namespace THCGamingOTTD
 			Console.Write("     press any key to continue...");
 			Console.ReadKey();
 			Console.WriteLine();
+			THCGamingOTTD.Done = true;
 		}
 
 		static public bool Done = false;
@@ -62,7 +63,6 @@ namespace THCGamingOTTD
 			Console.WriteLine ();
 			Console.ForegroundColor = ConsoleColor.Gray;
 
-			//args = new string[]{ "--prepare", @"C:\MinGW\msys\1.0\home\root\OpenTTD\bundle" };
 			if (args.Length != 0) {
 				this.HandleCLI (args);
 				return;
@@ -72,10 +72,6 @@ namespace THCGamingOTTD
 			Console.Write("     Checking remote server for version: ");
 			string remote_version = Updater.GetLatestVersion();
 			Console.WriteLine(remote_version);
-			if (remote_version == "none") {
-				WriteError("ERROR: Unable to obtain remote version.");
-				return;
-			}
 
 			Console.Write("     Checking for local version: ");
 			string local_version = Updater.GetLocalVersion();
@@ -83,7 +79,16 @@ namespace THCGamingOTTD
 
 			Console.WriteLine();
 
-			if (remote_version != local_version) {
+			if (remote_version == "none") {
+				if(local_version == "none") {
+					WriteError("ERROR: Unable to obtain remote version.");
+					return;
+				} else {
+					WriteHeader("Press any key to launch installed version...");
+					Console.ReadKey();
+					this.Run();
+				}
+			} else if (remote_version != local_version) {
 				WriteHeader("Downloading Latest Version");
 				Updater.PerformUpdate();
 			} else {
@@ -136,7 +141,6 @@ namespace THCGamingOTTD
 			Console.WriteLine("   help                    show this help screen");
 			Console.WriteLine("   prepare <bundle-dir>    prepares a zip file for release from a bundle dir.");
 		}
-			
+
 	}
 }
-

@@ -29,8 +29,8 @@ namespace THCGamingOTTD
 
 		static public string GetLatestVersion() {
 			try {
-                string hash = Updater.APIRequest("https://openttd.gaming.shadowacre.ltd/bundles/latest.hash");
-                return hash.Substring(0, 12);
+        string hash = Updater.APIRequest("https://releases.gaming.shadowacre.ltd/openttd/latest-windows.hash");
+        return hash.Substring(0, 12);
 			} catch(Exception) {
 				return "none";
 			}
@@ -51,12 +51,14 @@ namespace THCGamingOTTD
             switch ((int)Environment.OSVersion.Platform)
             {
                 case 4:   // mono
-                case 6:   // mac os x ?
                 case 128: // mono (1.0/1.1)
-                    filename = "latest-linux.tar.gz";
-                    break;
+                  	filename = "latest-linux.tar.gz";
+                  	break;
+								case 6:   // mac os x ?
+                  	filename = "latest-mac.tar.gz";
+                  	break;
                 case 2:   // Win32NT
-                    filename = "latest-i686-w64-mingw32.tar.gz";
+                    filename = "latest-windows.tar.gz";
                     break;
                 default:
                     THCGamingOTTD.WriteError("unable to detect platform. got: " + Environment.OSVersion.Platform + " (" + (int)Environment.OSVersion.Platform + ")");
@@ -101,7 +103,7 @@ namespace THCGamingOTTD
                 if (filename != "")
                 {
 					Console.Write("     Downloading '" + filename + "': 000%");
-					client.DownloadFileAsync(new Uri("https://openttd.gaming.shadowacre.ltd/bundles/" + filename), local_file);
+					client.DownloadFileAsync(new Uri("https://releases.gaming.shadowacre.ltd/openttd/" + filename), local_file);
 				} else {
 					THCGamingOTTD.WriteError("unable to obtain latest release url");
 				}
